@@ -8,6 +8,15 @@ import Students from "../views/Students.vue";
 import Curses from "../views/Curses.vue";
 import store from "../store";
 
+import EstudianteList from "../views/estudiantes/EstudianteList.vue";
+import EstudianteNew from "../views/estudiantes/EstudianteNew.vue";
+import EstudianteEdit from "../views/estudiantes/EstudianteEdit.vue";
+import EstudianteView from "../views/estudiantes/EstudianteView.vue";
+import CursoList from "../views/cursos/CursoList.vue";
+import CursoNew from "../views/cursos/CursoNew.vue";
+import CursoEdit from "../views/cursos/CursoEdit.vue";
+import CursoEstudianteList from "../views/cursosestudiantes/CursoEstudianteList.vue";
+
 const routes = [
     {
         path: "/",
@@ -20,15 +29,47 @@ const routes = [
                 name: "Home",
                 component: Home,
             },
+
             {
-                path: "/students",
-                name: "Students",
-                component: Students,
+                path: "/listarE",
+                name: "listarE",
+                component: EstudianteList,
+            },
+
+            {
+                path: "/createE",
+                name: "createE",
+                component: EstudianteNew,
             },
             {
-                path: "/curses",
-                name: "Curses",
-                component: Curses,
+                path: "/editE/:id",
+                name: "editE",
+                component: EstudianteEdit,
+            },
+            {
+                path: "/viewE/:id",
+                name: "viewE",
+                component: EstudianteView,
+            },
+            {
+                path: "/listarC",
+                name: "listarC",
+                component: CursoList,
+            },
+            {
+                path: "/createC",
+                name: "createC",
+                component: CursoNew,
+            },
+            {
+                path: "/editC/:id",
+                name: "editC",
+                component: CursoEdit,
+            },
+            {
+                path: "/listarCE",
+                name: "listarCE",
+                component: CursoEstudianteList,
             },
         ],
     },

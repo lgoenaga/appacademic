@@ -1,9 +1,10 @@
 <template>
   <PageComponent title="Students">
-    Contenido
+
     </PageComponent>
 </template>
 
 <script setup>
 import PageComponent from '../components/PageComponent.vue';
+//import EstudianteList from '../views/estudiantes/EstudianteList.vue';
 </script>

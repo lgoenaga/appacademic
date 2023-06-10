@@ -139,8 +139,9 @@ import { useRouter } from "vue-router";
 
 const navigation = [
     { name: "Home", to: { name: "Home" } },
-    { name: "Students", to: { name: "Students" } },
-    { name: "Curses", to: { name: "Curses" } },
+    { name: "Students", to: { name: "listarE" } },
+    { name: "Curses", to: { name: "listarC" } },
+    { name: "Studenst x Curse", to: {name: "listarCE"}},
 ];
 
 export default {
