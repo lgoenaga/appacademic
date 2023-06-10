@@ -6,7 +6,6 @@ namespace Database\Seeders;
 use App\Models\Curso;
 use App\Models\Estudiante;
 use App\Models\User;
-use App\Models\Estudiate;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
