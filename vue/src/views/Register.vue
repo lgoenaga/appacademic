@@ -83,10 +83,10 @@ function register(ev) {
     ev.preventDefault();
     store
         .dispatch("register", user)
-        .then((res) => {
+        .then(() => {
             router.push({
-                name: "Home",
+                name: 'Home',
             });
-        })
-    }
+        });
+}
 </script>

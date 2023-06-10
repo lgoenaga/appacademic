@@ -36,8 +36,8 @@ const routes = [
     {
         path: "/auth",
         redirect: "/login",
-        name: "AuthLayout",
-        meta:{ isGuest: true },
+        name: "Auth",
+        meta: { isGuest: true },
         component: AuthLayout,
         children: [
             {

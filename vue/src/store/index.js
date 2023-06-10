@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import axiosClient from "../axios";
 
 const store = createStore({
     state: {
@@ -7,25 +8,50 @@ const store = createStore({
             token: sessionStorage.getItem("TOKEN"),
         },
         home: {
+            loading: false,
             data: {},
+        },
+        students: {
+            loading: false,
+            data: [],
+        },
+        curses: {
+            data: {},
+            loading: false,
+        },
+        notification: {
+            show: false,
+            type: "success",
+            message: "",
         },
     },
     getters: {},
     actions: {
         register({ commit }, user) {
-            return fetch("http://127.0.0.1:8000/api/register", {
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                method: "POST",
-                body: JSON.stringify(user),
-            })
-                .then((res) => res.json())
-                .then((res) => {
-                    commit("setUser", res);
-                    return res;
-                });
+            return axiosClient.post("/register", user).then(({ data }) => {
+                commit("setUser", data.user);
+                commit("setToken", data.token);
+                return data;
+            });
+        },
+        login({ commit }, user) {
+            return axiosClient.post("/login", user).then(({ data }) => {
+                commit("setUser", data.user);
+                commit("setToken", data.token);
+                return data;
+            });
+        },
+        logout({ commit }) {
+            return axiosClient.post("/logout").then((response) => {
+                commit("logout");
+                return response;
+            });
+        },
+        getUser({ commit }) {
+            return axiosClient.get("/user").then((res) => {
+                console.log(res);
+                commit("setUser", res.data);
+            });
         },
     },
     mutations: {
@@ -35,14 +61,32 @@ const store = createStore({
             sessionStorage.removeItem("TOKEN");
         },
 
-        setUser: (state, userData) => {
-            state.user.token = userData.token;
-            state.user.data = userData.user;
-            sessionStorage.setItem("TOKEN", userData.token);
+        setUser: (state, user) => {
+            state.user.data = user;
         },
         setToken: (state, token) => {
             state.user.token = token;
             sessionStorage.setItem("TOKEN", token);
+        },
+        homeLoading: (state, loading) => {
+            state.home.loading = loading;
+        },
+        setHomeData: (state, data) => {
+            state.home.data = data;
+        },
+        setStudentsLoading: (state, loading) => {
+            state.students.loading = loading;
+        },
+        setCursesLoading: (state, loading) => {
+            state.curses.loading = loading;
+        },
+        notify: (state, { message, type }) => {
+            state.notification.show = true;
+            state.notification.type = type;
+            state.notification.message = message;
+            setTimeout(() => {
+                state.notification.show = false;
+            }, 3000);
         },
     },
     modules: {},
