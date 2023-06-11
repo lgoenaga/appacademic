@@ -27,6 +27,11 @@
   </div>
 </template>
 
+<script setup>
+import PageComponent from '../../components/PageComponent.vue';
+
+</script>
+
 <script>
 
 import {cargar,  mostrarAlerta, enviarSolicitud} from "../../funciones";
@@ -43,7 +48,7 @@ export default {
   },
 
   mounted() {
-    cargar('Crear')
+    cargar('Crear Curso')
   },
 
 

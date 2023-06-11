@@ -1,62 +1,72 @@
 <template>
-  <div class="row mt-3">
-    <div class="col-md-6 offset-md-3">
-      <div class="card">
-        <div class="card-header bg-dark text-white text-center">
-          DETALLE DEL ESTUDIANTE
-        </div>
-        <div class="card-body">
-          <form v-on:submit="detalle">
-            <div class="d-grid col-6 mx-auto mb-3">
-              <img v-if="this.photo" class="photoimg" height="300" :src="this.photo" id="photoimg"
-                alt="foto-estudiante" />
-              <img v-else class="photoimg" height="300"
-                src="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/7_avatar-256.png" alt="foto-default"
-                id="photoimg" />
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text">
-                <i class="fa-solid fa-user"></i>
-              </span>
-              <input type="text" v-model="firstName" id="firstName" class="form-control"
-                disabled>
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text">
-                <i class="fa-solid fa-user"></i>
-              </span>
-              <input type="text" v-model="lastName" id="lastName"  class="form-control"
-                disabled>
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text">
-                <i class="fa-solid fa-user"></i>
-              </span>
-              <input type="text" v-model="created_at" id="created_at"  class="form-control"
-                disabled>
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text">
-                <i class="fa-solid fa-user"></i>
-              </span>
-              <input type="text" v-model="updated_at" id="updated_at"  class="form-control"
-                disabled>
-            </div>
-            <div class="d-grid col-6 mx-auto mb-3">
-              <button class="btn btn-success">
-                <i class="fa-solid fa-floppy-disk"></i>
-                Regresar
-              </button>
-            </div>
-            <div class="d-grid col-6 mx-auto mb-3">
-            
+
+     <PageComponent title="Estudiantes">
+    <div class="row mt-3">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header bg-dark text-white text-center">
+            DETALLE DEL ESTUDIANTE
           </div>
-          </form>
+          <div class="card-body">
+            <form v-on:submit="detalle">
+              <div class="d-grid col-6 mx-auto mb-3">
+                <img v-if="this.photo" class="photoimg" height="300" :src="this.photo" id="photoimg"
+                  alt="foto-estudiante" />
+                <img v-else class="photoimg" height="300"
+                  src="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/7_avatar-256.png" alt="foto-default"
+                  id="photoimg" />
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="text" v-model="firstName" id="firstName" class="form-control"
+                  disabled>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="text" v-model="lastName" id="lastName"  class="form-control"
+                  disabled>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="text" v-model="created_at" id="created_at"  class="form-control"
+                  disabled>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="text" v-model="updated_at" id="updated_at"  class="form-control"
+                  disabled>
+              </div>
+              <div class="d-grid col-6 mx-auto mb-3">
+                <button class="btn btn-success">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                  Regresar
+                </button>
+              </div>
+              <div class="d-grid col-6 mx-auto mb-3">
+            
+            </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+     </PageComponent>
+
+
 </template>
+
+<script setup>
+import PageComponent from '../../components/PageComponent.vue';
+
+</script>
 
 <script>
 
@@ -75,14 +85,14 @@ export default {
       photo: '',
       created_at:'',
       updated_at:'',
-      EURI: 'http://localhost:8000/api/estudiantes',
+      URI: 'http://localhost:8000/api/estudiantes',
       cargando: false,
 
     };
   },
 
   mounted() {
-    cargar('Detalle')
+    cargar('Detalle Estudiante')
     const ruta = useRoute();
 
     this.id =  ruta.params.id;

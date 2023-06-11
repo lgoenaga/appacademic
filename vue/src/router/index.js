@@ -4,8 +4,6 @@ import Register from "../views/Register.vue";
 import Home from "../views/Home.vue";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
-import Students from "../views/Students.vue";
-import Curses from "../views/Curses.vue";
 import store from "../store";
 
 import EstudianteList from "../views/estudiantes/EstudianteList.vue";
@@ -51,6 +49,7 @@ const routes = [
                 name: "viewE",
                 component: EstudianteView,
             },
+
             {
                 path: "/listarC",
                 name: "listarC",

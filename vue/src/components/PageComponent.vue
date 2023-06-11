@@ -8,9 +8,9 @@
         </div>
     </header>
     <main>
-        <div class="max-w-8xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="max-w-8xl mx-auto sm:px-4 lg:px-8">
             <!-- Replace with your content -->
-            <div class="px-4 sm:px-0">
+            <div class="px-2 sm:px-0">
                 <slot></slot>
             </div>
             <!-- /End replace -->
@@ -24,4 +24,6 @@ const props = defineProps({
 });
 </script>
 
-<style></style>
+<style>
+ 
+</style>

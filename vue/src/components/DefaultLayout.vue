@@ -142,6 +142,7 @@ const navigation = [
     { name: "Students", to: { name: "listarE" } },
     { name: "Curses", to: { name: "listarC" } },
     { name: "Studenst x Curse", to: {name: "listarCE"}},
+    
 ];
 
 export default {
@@ -169,7 +170,7 @@ export default {
             });
         }
 
-        //store.dispatch("getUser");
+        store.dispatch("getUser");
 
         return {
             user: computed(() => store.state.user.data),

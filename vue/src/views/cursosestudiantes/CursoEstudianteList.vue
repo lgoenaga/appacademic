@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div>
+  <PageComponent title="Estudiantes por Curso">
+    <div class="row">
       <div class="table-responsive">
         <div class="row">
           <table class="table table-hover table-bordered">
@@ -33,7 +33,7 @@
                 <td>
                   <div class="botones">
                     &nbsp;
-                    <router-link :to="{ path: 'editC/' + course.id }" class="btn btn-warning">
+                    <router-link :to="{ path: '/editC/' + course.id }" class="btn btn-warning">
                       <i class="fa-solid fa-user-pen"></i>
                     </router-link>
                     &nbsp;
@@ -50,98 +50,103 @@
                   </div>
                 </td>
                 <div class="row">
-                  <table class="table table-hover table-bordered">
-                    <thead class="titulos-tabla">
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">ESTUDIANTE</th>
-                        <th scope="col">ACCION</th>
-                      </tr>
-                    </thead>
+                  <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                      <thead class="titulos-tabla">
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">ESTUDIANTE</th>
+                          <th scope="col">ACCION</th>
+                        </tr>
+                      </thead>
 
-                    <tbody class="table-group-divider" id="contenido">
+                      <tbody class="table-group-divider" id="contenido">
 
-                      <tr v-if="this.cargando">
-                        <td colspan="7">
-                          <h3>Cargando.....</h3>
-                        </td>
-                      </tr>
+                        <tr v-if="this.cargando">
+                          <td colspan="7">
+                            <h3>Cargando.....</h3>
+                          </td>
+                        </tr>
 
 
-                      <tr v-for="(est, i) in  this.cursosestudiantes " :key="est.id"
-                        v-show="(pagce - 1) * NUM_RESULTSCE <= i && pagce * NUM_RESULTSCE > i">
+                        <tr v-for="(est, i) in  this.cursosestudiantes " :key="est.id"
+                          v-show="(pagce - 1) * NUM_RESULTSCE <= i && pagce * NUM_RESULTSCE > i">
 
-                        <td v-if="est.curso_id === course.id" class="centrar" v-text="i + 1"></td>
-                        <td v-if="est.curso_id === course.id" v-text="est.estudiante_id"></td>
-                        <td v-if="est.curso_id === course.id">
-                          <button class="btn btn-danger" v-on:click="($event) =>
-                            eliminarC(
-                              est.id,
+                          <td v-if="est.curso_id === course.id" class="centrar" v-text="i + 1"></td>
+                          <td v-if="est.curso_id === course.id" v-text="est.estudiante_id"></td>
+                          <td v-if="est.curso_id === course.id" Class="centrar">
+                            <button class="btn btn-danger" v-on:click="($event) =>
+                              eliminarC(
+                                est.id,
 
-                              this.image ) ">
+                                this.image)">
                               <i class=" fa-solid fa-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <section class="page">
-                      <nav aria-label="Page navigation" class="text-center">
-                        <ul class="pagination text-center">
-                          <li>
-                            <a href="#" aria-label="Previous" v-show=" pagce != 1" @click.prevent="pagce -= 1">
-                              <button class="btn btn-success" aria-hidden="true">Anterior</button>
-                            </a>
-                          </li>
-                          <li>
-                            <a aria-label="Previous" v-show=" pagce != 0" @click.prevent="pagce -= 1">
-                              <span aria-hidden="true">pagina {{ pagce }} de {{ this.NoPagce }} </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#" aria-label="Next" v-show=" page * NUM_RESULTSCE / totalItemsce < 1"
-                              @click.prevent="page += 1">
-                              <button class="btn btn-success" aria-hidden="true">Siguiente</button>
-                            </a>
-                          </li>
-                        </ul>
-                      </nav>
-                    </section>
-                  </table>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+
+                    </table>
+                  </div>
+                  <section class="page">
+
+                    <nav aria-label="Page navigation" class="text-center">
+                      <ul class="pagination text-center">
+                        <li>
+                          <a href="#" aria-label="Previous" v-show="pagce != 1" @click.prevent="pagce -= 1">
+                            <button class="btn btn-success" aria-hidden="true">Anterior</button>
+                          </a>
+                        </li>
+                        <li>
+                          <a aria-label="Previous" v-show="pagce != 0" @click.prevent="pagce -= 1">
+                            <span aria-hidden="true">pagina {{ pagce }} de {{ this.NoPagce }} </span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" aria-label="Next" v-show="page * NUM_RESULTSCE / totalItemsce < 1"
+                            @click.prevent="page += 1">
+                            <button class="btn btn-success" aria-hidden="true">Siguiente</button>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </section>
                 </div>
               </tr>
             </tbody>
           </table>
         </div>
-
-
       </div>
       <section class="page">
         <nav aria-label="Page navigation" class="text-center">
           <ul class="pagination text-center">
             <li>
-              <a href="#" aria-label="Previous" v-show=" pagc != 1" @click.prevent="pagc -= 1">
+              <a href="#" aria-label="Previous" v-show="pagc != 1" @click.prevent="pagc -= 1">
                 <button class="btn btn-success" aria-hidden="true">Anterior</button>
               </a>
             </li>
             <li>
-              <a aria-label="Previous" v-show=" pagc != 0" @click.prevent="pagc -= 1">
+              <a aria-label="Previous" v-show="pagc != 0" @click.prevent="pagc -= 1">
                 <span aria-hidden="true">pagina {{ pagc }} de {{ this.NoPagc }} </span>
               </a>
             </li>
             <li>
-              <a href="#" aria-label="Next" v-show=" pagc * NUM_RESULTSC / totalItemsc < 1" @click.prevent="pagc += 1">
+              <a href="#" aria-label="Next" v-show="pagc * NUM_RESULTSC / totalItemsc < 1" @click.prevent="pagc += 1">
                 <button class="btn btn-success" aria-hidden="true">Siguiente</button>
               </a>
             </li>
           </ul>
         </nav>
       </section>
-
-
     </div>
-  </div>
+  </PageComponent>
+
 </template>
 
+<script setup>
+import PageComponent from '../../components/PageComponent.vue';
+
+</script>
 
 <script>
 
@@ -232,13 +237,13 @@ export default {
     eliminarC(id, image) {
       confirmar(
         "http://localhost:8000/api/curso_estudiantes",
-        id,   
+        id,
         image,
-         "Eliminar Registro",
+        "Eliminar Registro",
         "Realmente desea eliminar el registro ?",
 
       );
-      if (this.cargando){
+      if (this.cargando) {
         window.location.reload();
       }
       this.cargando = false;
