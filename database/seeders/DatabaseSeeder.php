@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->times(5)->create();
         Estudiante::factory()->times(15)->create();
-        Curso::factory()->times(8)->create()->each(
+        Curso::factory()->times(15)->create()->each(
             function ($curso) {
                 $curso->estudiantes()->sync(
                     Estudiante::all()->random(3)

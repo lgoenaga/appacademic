@@ -73,7 +73,7 @@ export default {
       firstName: '',
       lastName: '',
       photo: '',
-      URI: 'http://localhost:8000/api/estudiantes/',
+      URI: 'http://localhost:8000/api/estudiantes',
       cargando: false,
 
     };

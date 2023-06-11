@@ -1,7 +1,20 @@
 <template>
-  <PageComponent title="Cursos">
+  <PageComponent>
+
+    <template v-slot:header>
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-900">CURSOS</h1>
+        <router-link :to="{ name: 'createC' }"
+          class="py-2 px-3 text-white bg-emerald-600 rounded-md hover:bg-emerald-500">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Crear Curso
+        </router-link>
+      </div>
+    </template>
+
+
     <div class="row">
-      <div class="col-lg-8 offset-lg-2">
+      <div class="col col-lg-8 offset-lg-2">
         <div class="table-responsive">
           <table class="table table-hover table-bordered">
             <thead class="titulos-tabla">
@@ -53,7 +66,7 @@
             <ul class="pagination text-center">
               <li>
                 <a href="#" aria-label="Previous" v-show="pag != 1" @click.prevent="pag -= 1">
-                  <button class="btn btn-success" aria-hidden="true">Anterior</button>
+                  <button class="btn text-white bg-emerald-600 rounded-md hover:bg-emerald-500" aria-hidden="true">Anterior</button>
                 </a>
               </li>
               <li>
@@ -63,7 +76,7 @@
               </li>
               <li>
                 <a href="#" aria-label="Next" v-show="pag * NUM_RESULTS / totalItems < 1" @click.prevent="pag += 1">
-                  <button class="btn btn-success" aria-hidden="true">Siguiente</button>
+                  <button class="btn text-white bg-emerald-600 rounded-md hover:bg-emerald-500" aria-hidden="true">Siguiente</button>
                 </a>
               </li>
             </ul>
@@ -132,11 +145,13 @@ export default {
 
       );
       this.cargando = false;
+     
     },
   },
 };
 </script>
 <style>
+
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -160,12 +175,10 @@ export default {
   vertical-align: middle;
 }
 
-a.btn.btn-info {
-  background-color: rgb(0, 153, 255);
-}
 
 .filas .botones {
   height: 70px;
 
 }
+
 </style>

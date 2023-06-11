@@ -121,10 +121,7 @@ export default {
       
       event.preventDefault();     
       window.location.href = "/listarE";
-
       }
-      
-
 
   },
 };

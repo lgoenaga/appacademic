@@ -8,7 +8,7 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from "@vue/reactivity";
 
 const props = defineProps({

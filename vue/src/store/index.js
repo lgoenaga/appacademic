@@ -7,17 +7,8 @@ const store = createStore({
             data: {},
             token: sessionStorage.getItem("TOKEN"),
         },
-        home: {
-            loading: false,
+        estudiantes: {
             data: {},
-        },
-        students: {
-            loading: false,
-            data: [],
-        },
-        curses: {
-            data: {},
-            loading: false,
         },
         notification: {
             show: false,
@@ -49,8 +40,18 @@ const store = createStore({
         },
         getUser({ commit }) {
             return axiosClient.get("/user").then((res) => {
-                console.log(res);
                 commit("setUser", res.data);
+            });
+        },
+        getStudents({ commit }) {
+            return axiosClient.get("/estudiantes").then((res) => {
+                commit("setStudents", res.data);
+            });
+        },
+        deleteStudent({ dispatch }, id) {
+            return axiosClient.delete(`/estudiantes/${id}`).then((res) => {
+                dispatch("getStudents");
+                return res;
             });
         },
     },
@@ -68,17 +69,8 @@ const store = createStore({
             state.user.token = token;
             sessionStorage.setItem("TOKEN", token);
         },
-        homeLoading: (state, loading) => {
-            state.home.loading = loading;
-        },
-        setHomeData: (state, data) => {
-            state.home.data = data;
-        },
-        setStudentsLoading: (state, loading) => {
-            state.students.loading = loading;
-        },
-        setCursesLoading: (state, loading) => {
-            state.curses.loading = loading;
+        setStudents: (state, estudiantes) => {
+            state.estudiantes.data = estudiantes;
         },
         notify: (state, { message, type }) => {
             state.notification.show = true;

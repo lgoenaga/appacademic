@@ -14,7 +14,7 @@
     </TButton>
 </template>
 
-<script>
+<script  setup>
 import TButton from './TButton.vue'
 const props = defineProps({
     loading: Boolean

@@ -1,6 +1,5 @@
 <template>
-
-   <PageComponent title="Estudiantes">
+  <PageComponent title="Estudiantes">
     <div class="row mt-3">
       <div class="col-md-6 offset-md-3">
         <div class="card">
@@ -48,9 +47,7 @@
         </div>
       </div>
     </div>
-   </PageComponent>
-
-
+  </PageComponent>
 </template>
 
 <script setup>
@@ -60,7 +57,8 @@ import PageComponent from '../../components/PageComponent.vue';
 
 <script>
 
-import {cargar,  mostrarAlerta, enviarSolicitud} from "../../funciones";
+import { cargar, mostrarAlerta, enviarSolicitud } from "../../funciones";
+
 
 
 export default {
@@ -82,25 +80,25 @@ export default {
 
   methods: {
     guardar() {
-      
-      event.preventDefault();     
+
+      event.preventDefault();
       var miPhoto = document.getElementById('photoimg');
       this.photo = miPhoto.src;
 
 
-      if(this.firstName.trim()===''){
+      if (this.firstName.trim() === '') {
         mostrarAlerta('Campo nombre en blanco', 'warning', 'firstName');
-      }else{
-        if(this.lastName.trim()===''){
-        mostrarAlerta('Campo apellido en blanco', 'warning', 'lastName');
-      }else{
-          var parametros = {firstName:this.firstName.trim(), lastName:this.lastName.trim(), photo:this.photo.trim()}
-     
-        enviarSolicitud('POST', parametros, this.URI, 'Estudiante registrado')
+      } else {
+        if (this.lastName.trim() === '') {
+          mostrarAlerta('Campo apellido en blanco', 'warning', 'lastName');
+        } else {
+          var parametros = { firstName: this.firstName.trim(), lastName: this.lastName.trim(), photo: this.photo.trim() }
+
+          enviarSolicitud('POST', parametros, this.URI, 'Estudiante registrado')
           this.$router.push({ name: 'listarE' });
+        }
       }
-      }
-      
+
     },
     previewPhoto(event) {
       var readerFile = new FileReader();

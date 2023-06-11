@@ -71,21 +71,14 @@ export function mostrarAlerta(titulo, icono, foco = "") {
     },
   }).then((result) => {
     if (result.dismiss === Swal.DismissReason.timer) {
-      console.log("I was closed by the timer");
-
-      window.location.href = "#";
-      
-    }else{
-      if (result.isConfirmed){
-        window.location.href = "#";
-      }
+      console.log("I was closed by the timer"); 
     }
   });
 }
 
 export function confirmar(URI, id, imagen, titulo, mensaje) {
   var url = URI + "/" + id;
-
+  console.log(url);
   const sweetBootsrap = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-primary me-3",
@@ -126,12 +119,16 @@ export function confirmar(URI, id, imagen, titulo, mensaje) {
         toast.addEventListener("mouseleave", Swal.resumeTimer);
       },
     })
-    .then((res) => {
+    .then((res,headers) => {
       if (res.isConfirmed) {
         enviarSolicitud("DELETE", { id: id }, url, "Eliminado con exito");
+        if (headers===200){
+          console.log('Eliminado');
+        }
+
       } else {
         mostrarAlerta("Operacion Cancelada", "error");
-      
+
       }
     });
 }
@@ -144,12 +141,13 @@ export function enviarSolicitud(metodo, parametros, URI, mensaje) {
               mostrarAlerta(mensaje, "success");
 
               if (Swal.DismissReason.timer === 0) {
-                  window.location.href = URI;
+                  window.location.reload();
               } else {
                   if (res.isConfirmed) {
-                      window.location.href = URI;
+                      window.location.reload();
                   }
               }
+
           } else {
               if (estado == 500) {
                   mostrarAlerta("Error de servidor", "error");
