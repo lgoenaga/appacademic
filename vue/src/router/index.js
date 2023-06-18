@@ -15,6 +15,11 @@ import CursoNew from "../views/cursos/CursoNew.vue";
 import CursoEdit from "../views/cursos/CursoEdit.vue";
 import CursoEstudianteList from "../views/cursosestudiantes/CursoEstudianteList.vue";
 
+import UsuarioList from "../views/usuarios/UsuarioList.vue";
+import UsuarioNew from "../views/usuarios/UsuarioNew.vue";
+import UsuarioEdit from "../views/usuarios/UsuarioEdit.vue";
+import UsuarioView from "../views/usuarios/UsuarioView.vue";
+
 const routes = [
     {
         path: "/",
@@ -65,10 +70,32 @@ const routes = [
                 name: "editC",
                 component: CursoEdit,
             },
+
             {
                 path: "/listarCE",
                 name: "listarCE",
                 component: CursoEstudianteList,
+            },
+
+            {
+                path: "/listarU",
+                name: "listarU",
+                component: UsuarioList,
+            },
+            {
+                path: "/createU",
+                name: "createU",
+                component: UsuarioNew,
+            },
+            {
+                path: "/editU/:id",
+                name: "editU",
+                component: UsuarioEdit,
+            },
+            {
+                path: "/viewU/:id",
+                name: "viewU",
+                component: UsuarioView,
             },
         ],
     },

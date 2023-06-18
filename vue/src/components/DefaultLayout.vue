@@ -142,6 +142,7 @@ const navigation = [
     { name: "Students", to: { name: "listarE" } },
     { name: "Curses", to: { name: "listarC" } },
     { name: "Studenst x Curse", to: {name: "listarCE"}},
+    { name: "Users", to: { name: "listarU" } },
     
 ];
 
