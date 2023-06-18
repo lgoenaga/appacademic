@@ -1,40 +1,41 @@
 <template>
-  <PageComponent title="Estudiantes">
+  <PageComponent title="Usuarios">
     <div class="row mt-3">
       <div class="col-md-6 offset-md-3">
         <div class="card">
           <div class="card-header bg-dark text-white text-center">
-            REGISTRAR ESTUDIANTE
+            REGISTRAR USUARIO
           </div>
           <div class="card-body">
             <form v-on:submit="guardar">
-              <div class="d-grid col-6 mx-auto mb-3">
-                <img v-if="this.photo" class="photoimg" height="300" :src="this.photo" id="photoimg"
-                  alt="foto-estudiante" />
-                <img v-else class="photoimg" height="300"
-                  src="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/7_avatar-256.png" alt="foto-default"
-                  id="photoimg" />
-              </div>
+
               <div class="input-group mb-3">
                 <span class="input-group-text">
                   <i class="fa-solid fa-user"></i>
                 </span>
-                <input type="text" v-model="firstName" id="firstName" placeholder="Ingrese el nombre" class="form-control"
+                <input type="text" v-model="name" id="name" placeholder="Ingrese el nombre" class="form-control"
                   maxlength="50" required>
               </div>
               <div class="input-group mb-3">
                 <span class="input-group-text">
                   <i class="fa-solid fa-user"></i>
                 </span>
-                <input type="text" v-model="lastName" id="lastName" placeholder="Ingrese el apellido" class="form-control"
+                <input type="email" v-model="email" id="email" placeholder="Ingrese el correo" class="form-control"
                   maxlength="50" required>
               </div>
               <div class="input-group mb-3">
                 <span class="input-group-text">
-                  <i class="fa-solid fa-camera"></i>
+                  <i class="fa-solid fa-user"></i>
                 </span>
-                <input type="file" v-on:change="previewPhoto" class="form-control"
-                  accept="image/png, image/jpeg, image/gif">
+                <input type="password" v-model="password" id="password" placeholder="Ingrese la clave"
+                  class="form-control" maxlength="50" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="password" v-model="cnfpassword" id="cnfpassword" placeholder="Confirme la clave"
+                  class="form-control" maxlength="50" required>
               </div>
               <div class="d-grid col-6 mx-auto mb-3">
                 <button class="btn btn-success">
@@ -64,17 +65,18 @@ import { cargar, mostrarAlerta, enviarSolicitud } from "../../funciones";
 export default {
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      photo: '',
-      URI: 'http://localhost:8000/api/estudiantes',
+      name: '',
+      email: '',
+      password: '',
+      cnfpassword: '',
+      URI: 'http://localhost:8000/api/users',
       cargando: false,
 
     };
   },
 
   mounted() {
-    cargar('Crear Estudiante')
+    cargar('Crear Usuario')
   },
 
 
@@ -82,34 +84,34 @@ export default {
     guardar() {
 
       event.preventDefault();
-      var miPhoto = document.getElementById('photoimg');
-      this.photo = miPhoto.src;
 
-
-      if (this.firstName.trim() === '') {
-        mostrarAlerta('Campo nombre en blanco', 'warning', 'firstName');
+      if (this.name.trim() === '') {
+        mostrarAlerta('Campo nombre en blanco', 'warning', 'name');
       } else {
-        if (this.lastName.trim() === '') {
-          mostrarAlerta('Campo apellido en blanco', 'warning', 'lastName');
+        if (this.email.trim() === '') {
+          mostrarAlerta('Campo email en blanco', 'warning', 'password');
         } else {
-          var parametros = { firstName: this.firstName.trim(), lastName: this.lastName.trim(), photo: this.photo.trim() }
+          if (this.password.trim() === '') {
+            mostrarAlerta('Campo password en blanco', 'warning', 'password');
+          } else {
+            if (this.cnfpassword.trim() === '') {
+              mostrarAlerta('Campo confirmar password en blanco', 'warning', 'cnfpassword');
+            } else {
+              if (this.password.trim() != this.cnfpassword.trim()) {
+                mostrarAlerta('Las contraseñas no coinciden', 'warning', 'cnfpassword');
+              } else {
+                var parametros = { name: this.name.trim(), email: this.email.trim(), password: this.password.trim() }
 
-          enviarSolicitud('POST', parametros, this.URI, 'Estudiante registrado')
-          this.$router.push({ name: 'listarE' });
+                enviarSolicitud('POST', parametros, this.URI, 'Usuario registrado')
+                this.$router.push({ name: 'listarU' });
+              }
+            }
+          }
         }
+
       }
 
     },
-    previewPhoto(event) {
-      var readerFile = new FileReader();
-      readerFile.readAsDataURL(event.target.files[0]);
-      readerFile.onload = function () {
-        var miPhoto = document.getElementById('photoimg');
-        miPhoto.src = readerFile.result;
-        this.photo = miPhoto.src;
-
-      }
-    }
 
   },
 };

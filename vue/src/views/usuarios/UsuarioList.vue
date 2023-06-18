@@ -4,7 +4,7 @@
     <template v-slot:header>
       <div class="flex justify-between items-center">
         <h1 class="text-3xl font-bold text-gray-900">Usuarios</h1>
-        <router-link :to="{ name: 'createE' }"
+        <router-link :to="{ name: 'createU' }"
           class="py-2 px-3 text-white bg-emerald-600 rounded-md hover:bg-emerald-500">
           <i class="fa-solid fa-floppy-disk"></i>
           Crear Usuario

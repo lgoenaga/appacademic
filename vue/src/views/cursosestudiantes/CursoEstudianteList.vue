@@ -226,7 +226,7 @@ export default {
         this.NUM_RESULTSCE = newArrayce.length;
         this.NoPagce = Math.ceil(this.totalItemsce / this.NUM_RESULTSCE);
         this.cursoestudiantes = newArrayce;
-        console.log(newArrayce);
+       // console.log(newArrayce);
         return this.cursosestudiantes;
       });
     },
