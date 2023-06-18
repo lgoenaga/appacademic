@@ -55,7 +55,8 @@
                       <thead class="titulos-tabla">
                         <tr>
                           <th scope="col">#</th>
-                          <th scope="col">ESTUDIANTE</th>
+                          <th scope="col">ID</th>
+          <!--                 <th scope="col">ESTUDIANTE</th> -->
                           <th scope="col">ACCION</th>
                         </tr>
                       </thead>
@@ -69,11 +70,12 @@
                         </tr>
 
 
-                        <tr v-for="(est, i) in  this.cursosestudiantes " :key="est.id"
+                        <tr v-for="(est, i) in  this.cursoestudiantes " :key="est.id"
                           v-show="(pagce - 1) * NUM_RESULTSCE <= i && pagce * NUM_RESULTSCE > i">
 
                           <td v-if="est.curso_id === course.id" class="centrar" v-text="i + 1"></td>
                           <td v-if="est.curso_id === course.id" v-text="est.estudiante_id"></td>
+<!--                           <td v-if="est.curso_id === course.id" v-text="est.firstName"></td> -->
                           <td v-if="est.curso_id === course.id" Class="centrar">
                             <button class="btn btn-danger" v-on:click="($event) =>
                               eliminarC(
@@ -140,7 +142,6 @@
       </section>
     </div>
   </PageComponent>
-
 </template>
 
 <script setup>
@@ -175,6 +176,10 @@ export default {
       pagce: 1,
       totalItemsce: 1,
       image: "",
+      student: null,
+      cursoestudiantes:null,
+      estu:null,
+
     };
   },
   computed: {
@@ -185,6 +190,7 @@ export default {
     this.getCursos();
     this.getEstudiates();
     this.getCursosEstudiantes();
+
   },
 
 
@@ -200,14 +206,37 @@ export default {
       });
     },
 
-    getCursosEstudiantes() {
-      axiosClient.get("http://localhost:8000/api/curso_estudiantes").then((res) => {
+
+     async getCursosEstudiantes() {
+      axiosClient.get("http://localhost:8000/api/curso_estudiantes").then(async (res) => {
         this.cursosestudiantes = res.data;
-        const newArrayce = this.cursosestudiantes.map(a => ({ ...a }));
+        const newArrayce = this.cursosestudiantes.map(a => ({ ...a}));
+/*          for (const est in newArrayce) {
+         this.estu = await axiosClient.get("http://localhost:8000/api/estudiantes/" + est).then((res) => {
+            this.student = res.data;
+            console.log(this.student);
+            console.log(this.student.data);
+            return this.student;
+          });
+
+          console.log(this.estu);
+          newArrayce[est]  = [{...newArrayce[est], firstName:"Luis"}]
+        } */
         this.totalItemsce = 1;
         this.NUM_RESULTSCE = newArrayce.length;
         this.NoPagce = Math.ceil(this.totalItemsce / this.NUM_RESULTSCE);
+        this.cursoestudiantes = newArrayce;
+        console.log(newArrayce);
         return this.cursosestudiantes;
+      });
+    },
+
+    async getStudent(id) {
+     await axiosClient.get("http://localhost:8000/api/estudiantes/" + id).then((res) => {
+       this.student = res.data;
+        console.log(this.student);
+        console.log(this.student.data);
+        return this.student;
       });
     },
 
