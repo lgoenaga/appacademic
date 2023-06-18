@@ -5,29 +5,22 @@
       <div class="col-md-6 offset-md-3">
         <div class="card">
           <div class="card-header bg-dark text-white text-center">
-            DETALLE DEL ESTUDIANTE
+            DETALLE DEL USUARIO
           </div>
           <div class="card-body">
             <form v-on:submit="detalle">
-              <div class="d-grid col-6 mx-auto mb-3">
-                <img v-if="this.photo" class="photoimg" height="300" :src="this.photo" id="photoimg"
-                  alt="foto-estudiante" />
-                <img v-else class="photoimg" height="300"
-                  src="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/7_avatar-256.png" alt="foto-default"
-                  id="photoimg" />
-              </div>
               <div class="input-group mb-3">
                 <span class="input-group-text">
                   <i class="fa-solid fa-user"></i>
                 </span>
-                <input type="text" v-model="firstName" id="firstName" class="form-control"
+                <input type="text" v-model="name" id="name" class="form-control"
                   disabled>
               </div>
               <div class="input-group mb-3">
                 <span class="input-group-text">
                   <i class="fa-solid fa-user"></i>
                 </span>
-                <input type="text" v-model="lastName" id="lastName"  class="form-control"
+                <input type="text" v-model="email" id="email"  class="form-control"
                   disabled>
               </div>
               <div class="input-group mb-3">
@@ -80,36 +73,34 @@ export default {
   data() {
     return {
       id:0,
-      firstName: '',
-      lastName: '',
-      photo: '',
+      name: '',
+      email: '',
       created_at:'',
       updated_at:'',
-      URI: 'http://localhost:8000/api/estudiantes',
+      URI: 'http://localhost:8000/api/users',
       cargando: false,
 
     };
   },
 
   mounted() {
-    cargar('Detalle Estudiante')
+    cargar('Detalle Usuario')
     const ruta = useRoute();
 
     this.id =  ruta.params.id;
     this.URI += '/'+this.id;
-    this.getEstudianteView();
+    this.getUsuarioView();
   },
 
   methods: {
 
-    getEstudianteView(){
+    getUsuarioView(){
 
       axiosClient.get(this.URI).then(
         res=>{
        
-          this.firstName = res.data.data.firstName;
-          this.lastName = res.data.data.lastName;
-          this.photo = res.data.data.photo;
+          this.name = res.data.data.name;
+          this.email = res.data.data.email;
           this.created_at = new Date(res.data.data.created_at).toLocaleString('es-ES');   
           this.updated_at = new Date(res.data.data.updated_at).toLocaleString('es-ES');
         }
@@ -120,7 +111,7 @@ export default {
     detalle() {
       
       event.preventDefault();     
-      window.location.href = "/listarE";
+      window.location.href = "/listarU";
       }
 
   },

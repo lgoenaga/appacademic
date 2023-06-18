@@ -46,7 +46,7 @@
                   </router-link>
 
                   &nbsp;
-                  <router-link :to="{ path: `/edit/${usr.id}` }" class="btn btn-warning">
+                  <router-link :to="{ path: `/editU/${usr.id}` }" class="btn btn-warning">
                     <i class="fa-solid fa-user-pen"></i>
                   </router-link>
                   &nbsp;
@@ -127,7 +127,7 @@ export default {
 
   },
   mounted() {
-    cargar("Listar Estudiante");
+    cargar("Listar Usuarios");
     this.getUsuarios();
   },
 
