@@ -37,6 +37,13 @@
                 <input type="password" v-model="cnfpassword" id="cnfpassword" placeholder="Confirme la clave"
                   class="form-control" maxlength="50" required>
               </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="text" v-model="rol" id="rol" placeholder="Ingrese el rol" class="form-control" maxlength="50"
+                  required>
+              </div>
               <div class="d-grid col-6 mx-auto mb-3">
                 <button class="btn btn-success">
                   <i class="fa-solid fa-floppy-disk"></i>
@@ -53,6 +60,9 @@
 
 <script setup>
 import PageComponent from '../../components/PageComponent.vue';
+import store from "../../store";
+
+
 
 </script>
 
@@ -69,14 +79,16 @@ export default {
       email: '',
       password: '',
       cnfpassword: '',
+      rol: '',
       URI: 'http://localhost:8000/api/users',
       cargando: false,
-
+      roladmin: '',
     };
   },
 
   mounted() {
     cargar('Crear Usuario')
+
   },
 
 
@@ -84,7 +96,8 @@ export default {
     guardar() {
 
       event.preventDefault();
-
+       this.roladmin= store.state.user.data.rol;
+      console.log(this.roladmin);
       if (this.name.trim() === '') {
         mostrarAlerta('Campo nombre en blanco', 'warning', 'name');
       } else {
@@ -100,10 +113,21 @@ export default {
               if (this.password.trim() != this.cnfpassword.trim()) {
                 mostrarAlerta('Las contraseñas no coinciden', 'warning', 'cnfpassword');
               } else {
-                var parametros = { name: this.name.trim(), email: this.email.trim(), password: this.password.trim() }
 
-                enviarSolicitud('POST', parametros, this.URI, 'Usuario registrado')
-                this.$router.push({ name: 'listarU' });
+                if (this.rol.trim() === '') {
+                  mostrarAlerta('Campo role en blanco', 'warning', 'role');
+                } else {
+                  var parametros = { name: this.name.trim(), email: this.email.trim(), password: this.password.trim(), rol: this.rol.trim() }
+                  
+                  if(this.roladmin=='admin'){
+                        enviarSolicitud('POST', parametros, this.URI, 'Usuario registrado')
+                    this.$router.push({ name: 'listarU' });
+                  }else{
+                    mostrarAlerta('No tiene permisos para crear usuarios', 'warning', 'role');
+                  }
+
+                }
+
               }
             }
           }

@@ -60,6 +60,8 @@ const store = createStore({
             state.user.token = null;
             state.user.data = {};
             sessionStorage.removeItem("TOKEN");
+
+            
         },
 
         setUser: (state, user) => {
@@ -68,6 +70,11 @@ const store = createStore({
         setToken: (state, token) => {
             state.user.token = token;
             sessionStorage.setItem("TOKEN", token);
+        },
+
+        getToken: (state) => {  
+            state.user.token = token;
+            sessionStorage.getItem("TOKEN", token);
         },
         setStudents: (state, estudiantes) => {
             state.estudiantes.data = estudiantes;

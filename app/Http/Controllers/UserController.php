@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\IsAdmin;
 use App\Models\User;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -29,19 +33,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $inputs = $request->input();
         $inputs['password'] = Hash::make($request->password);
+
+     
         $res = User::create($inputs);
-        if(isset($res)){
+        if (isset($res)) {
             return response()->json([
-                'data'=>$res,
-                'mensaje'=>'Usuario guardado',
+                'data' => $res,
+                'mensaje' => 'Usuario guardado',
             ]);
-        }else{
+        } else {
             return response()->json([
-                'error'=>true,
-                'mensaje'=>'Guardado fallido',
-        ]);
+                'error' => true,
+                'mensaje' => 'No tienes permisos para realizar esta acción',
+            ]);
         }
     }
 
@@ -51,16 +59,16 @@ class UserController extends Controller
     public function show(string $id)
     {
         $usr = User::find($id);
-        if(isset($usr)){
+        if (isset($usr)) {
             return response()->json([
-                'data'=>$usr,
-                'mensaje'=>'Usuario encontrado',
+                'data' => $usr,
+                'mensaje' => 'Usuario encontrado',
             ]);
-        }else{
+        } else {
             return response()->json([
-                'error'=>true,
-                'mensaje'=>'Información incorrecta',
-        ]);
+                'error' => true,
+                'mensaje' => 'Información incorrecta',
+            ]);
         }
     }
 
@@ -69,7 +77,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-     //
+        //
     }
 
     /**
@@ -80,28 +88,29 @@ class UserController extends Controller
         $usr = User::find($id);
 
 
-        if(isset($usr)){
+
+        if (isset($usr)) {
             $usr->name = $request->name;
             $usr->email = $request->email;
             $usr->password = Hash::make($request->password);
-            if($usr->save()){
+            $usr->rol = $request->rol;
+
+
+            if ($usr->save()) {
                 return response()->json([
-                    'data'=>$usr,
-                    'mensaje'=>'Usuario actualizado',
+                    'data' => $usr,
+                    'mensaje' => 'Usuario actualizado',
                 ]);
-            }else
-            {
+            } else {
                 return response()->json([
-                        'error'=>true,
-                        'mensaje'=>'Actualización fallida',
+                    'error' => true,
+                    'mensaje' => 'Actualización fallida',
                 ]);
-            }       
-            
-        }else
-        {
+            }
+        } else {
             return response()->json([
-                    'error'=>true,
-                    'mensaje'=>'No exist información',
+                'error' => true,
+                'mensaje' => 'Información incorrecta',
             ]);
         }
     }
@@ -109,19 +118,29 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $usr = User::find($id);
-        if(isset($usr)){
-            $usr->delete();
+
+        if (isset($usr)) {
+
+
+
+            if ($usr->delete()) {
+                return response()->json([
+                    'mensaje' => 'Usuario Eliminado',
+                ]);
+            } else {
+                return response()->json([
+                    'error' => true,
+                    'mensaje' => 'Eliminación fallida',
+                ]);
+            }
+        } else {
             return response()->json([
-                'mensaje'=>'Usuario Eliminado',
+                'error' => true,
+                'mensaje' => 'Información incorrecta',
             ]);
-        }else{
-            return response()->json([
-                'error'=>true,
-                'mensaje'=>'Información incorrecta',
-        ]);
         }
     }
 }
