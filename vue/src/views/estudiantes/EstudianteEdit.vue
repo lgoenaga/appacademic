@@ -54,7 +54,7 @@
 
 <script setup>
 import PageComponent from '../../components/PageComponent.vue';
-
+import store from "../../store";
 </script>
 
 <script>
@@ -75,7 +75,7 @@ export default {
       photo: '',
       URI: 'http://localhost:8000/api/estudiantes',
       cargando: false,
-
+      rolguest: '',
     };
   },
 
@@ -91,39 +91,50 @@ export default {
   methods: {
 
     getEstudiante(){
+      this.rolguest = store.state.user.data.rol;
 
-      axiosClient.get(this.URI).then(
-        res=>{
-       
-          this.firstName = res.data.data.firstName;
-          this.lastName = res.data.data.lastName;
-          this.photo = res.data.data.photo;
-        }
-      );
- 
+      if(this.rolguest === 'guest'){
+         mostrarAlerta('No tiene permisos para editar estudiantes', 'warning', '');
+      }else{
+              axiosClient.get(this.URI).then(
+          res => {
+
+            this.firstName = res.data.data.firstName;
+            this.lastName = res.data.data.lastName;
+            this.photo = res.data.data.photo;
+          }
+        );
+      }
+
     },
 
     actualizar() {
       
       event.preventDefault();     
-      var miPhoto = document.getElementById('photoimg');
-      this.photo = miPhoto.src;
+      this.rolguest = store.state.user.data.rol;
+
+      if (this.rolguest === 'guest') {
+        mostrarAlerta('No tiene permisos para editar estudiantes', 'warning', '');
+      } else {
+        var miPhoto = document.getElementById('photoimg');
+        this.photo = miPhoto.src;
 
 
-      if(this.firstName.trim()===''){
-        mostrarAlerta('Campo nombre en blanco', 'warning', 'firstName');
-      }else{
-        if(this.lastName.trim()===''){
-        mostrarAlerta('Campo apellido en blanco', 'warning', 'lastName');
-      }else{
-          var parametros = {firstName:this.firstName.trim(), lastName:this.lastName.trim(), photo:this.photo.trim()}
-     
-        enviarSolicitud('PUT', parametros, this.URI, 'Estudiante actualizado');
-          this.$router.push({ name: 'listarE' });
-      }
-      }
-      
+        if (this.firstName.trim() === '') {
+          mostrarAlerta('Campo nombre en blanco', 'warning', 'firstName');
+        } else {
+          if (this.lastName.trim() === '') {
+            mostrarAlerta('Campo apellido en blanco', 'warning', 'lastName');
+          } else {
+            var parametros = { firstName: this.firstName.trim(), lastName: this.lastName.trim(), photo: this.photo.trim() }
+
+            enviarSolicitud('PUT', parametros, this.URI, 'Estudiante actualizado');
+            this.$router.push({ name: 'listarE' });
+          }
+        }
+      }    
     },
+    
     previewPhoto(event) {
       var readerFile = new FileReader();
       readerFile.readAsDataURL(event.target.files[0]);

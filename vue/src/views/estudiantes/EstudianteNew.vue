@@ -52,7 +52,7 @@
 
 <script setup>
 import PageComponent from '../../components/PageComponent.vue';
-
+import store from "../../store";
 </script>
 
 <script>
@@ -69,6 +69,7 @@ export default {
       photo: '',
       URI: 'http://localhost:8000/api/estudiantes',
       cargando: false,
+       rolguest: '',
 
     };
   },
@@ -82,6 +83,8 @@ export default {
     guardar() {
 
       event.preventDefault();
+      this.rolguest = store.state.user.data.rol;
+
       var miPhoto = document.getElementById('photoimg');
       this.photo = miPhoto.src;
 
@@ -94,8 +97,13 @@ export default {
         } else {
           var parametros = { firstName: this.firstName.trim(), lastName: this.lastName.trim(), photo: this.photo.trim() }
 
+
+          if (this.rolguest != 'guest') {
           enviarSolicitud('POST', parametros, this.URI, 'Estudiante registrado')
           this.$router.push({ name: 'listarE' });
+          } else {
+            mostrarAlerta('No tiene permisos para registrar estudiantes', 'warning', '');
+          }
         }
       }
 

@@ -97,7 +97,6 @@ export default {
 
       event.preventDefault();
        this.roladmin= store.state.user.data.rol;
-      console.log(this.roladmin);
       if (this.name.trim() === '') {
         mostrarAlerta('Campo nombre en blanco', 'warning', 'name');
       } else {
@@ -123,7 +122,7 @@ export default {
                         enviarSolicitud('POST', parametros, this.URI, 'Usuario registrado')
                     this.$router.push({ name: 'listarU' });
                   }else{
-                    mostrarAlerta('No tiene permisos para crear usuarios', 'warning', 'role');
+                    mostrarAlerta('No tiene permisos para crear usuarios', 'warning', '');
                   }
 
                 }

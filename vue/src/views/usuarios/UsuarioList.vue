@@ -96,12 +96,12 @@
 
 <script setup>
 import PageComponent from '../../components/PageComponent.vue';
-
+import store from "../../store";
 </script>
 
 <script >
 
-import { confirmar, cargar } from "../../funciones";
+import { confirmar, cargar, mostrarAlerta } from "../../funciones";
 import axiosClient from "../../axios";
 
 
@@ -118,7 +118,8 @@ export default {
       NUM_RESULTS: 4,
       NoPag: 1,
       pag: 1,
-
+      roladmin: '',
+      rolguest: '',
 
 
     };
@@ -134,26 +135,39 @@ export default {
 
   methods: {
     getUsuarios() {
-      axiosClient.get("http://localhost:8000/api/users").then((res) => {
-        this.usuarios = res.data;
+      this.rolguest = store.state.user.data.rol;
+      if (this.rolguest == 'guest') {
+        this.cargando = true;
+        mostrarAlerta('No tiene permisos para ver usuarios', 'warning', '');
+      } else {
         this.cargando = false;
-        const newArray = this.usuarios.map(a => ({ ...a }));
-        this.totalItems = newArray.length;
-        this.NoPag = Math.ceil(this.totalItems / this.NUM_RESULTS);
-        return this.Nopag;
-      });
+        axiosClient.get("http://localhost:8000/api/users").then((res) => {
+          this.usuarios = res.data;
+          this.cargando = false;
+          const newArray = this.usuarios.map(a => ({ ...a }));
+          this.totalItems = newArray.length;
+          this.NoPag = Math.ceil(this.totalItems / this.NUM_RESULTS);
+          return this.Nopag;
+        });
+      }
     },
 
     eliminar(id, nombre, imagen) {
-      confirmar(
-        "http://localhost:8000/api/users",
-        id,
-        imagen,
-        "Eliminar Registro",
-        "Realmente desea eliminar a " + nombre + " ?",
+       this.roladmin = store.state.user.data.rol;
+      if (this.roladmin == 'admin') {
+        this.cargando = true;
+        confirmar(
+          "http://localhost:8000/api/users",
+          id,
+          imagen,
+          "Eliminar Registro",
+          "Realmente desea eliminar a " + nombre + " ?",
 
-      );
-      this.cargando = false;
+        );
+        this.cargando = false;
+      } else {
+        mostrarAlerta('No tiene permisos para eliminar usuarios', 'warning', '');
+      }  
 
     },
 

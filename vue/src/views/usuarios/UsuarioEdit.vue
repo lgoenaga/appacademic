@@ -29,6 +29,13 @@
                 <input type="password" v-model="password" id="password" placeholder="Ingrese la clave"
                   class="form-control" maxlength="50" required>
               </div>
+                            <div class="input-group mb-3">
+                  <span class="input-group-text">
+                    <i class="fa-solid fa-user"></i>
+                  </span>
+                  <input type="text" v-model="rol" id="rol" placeholder="Ingrese el rol" class="form-control" maxlength="50"
+                    required>
+                </div>
               <div class="d-grid col-6 mx-auto mb-3">
                 <button class="btn btn-success">
                   <i class="fa-solid fa-floppy-disk"></i>
@@ -45,6 +52,7 @@
 
 <script setup>
 import PageComponent from '../../components/PageComponent.vue';
+import store from "../../store";
 
 </script>
 
@@ -64,9 +72,10 @@ export default {
       name: '',
       email: '',
       password: '',
+      rol: '',
       URI: 'http://localhost:8000/api/users',
       cargando: false,
-
+      roladmin: '',
     };
   },
 
@@ -82,41 +91,52 @@ export default {
   methods: {
 
     getUsuario() {
+      this.roladmin = store.state.user.data.rol;
+      if (this.roladmin == 'admin') {
+        axiosClient.get(this.URI).then(
+          res => {
 
-      axiosClient.get(this.URI).then(
-        res => {
+            this.name = res.data.data.name;
+            this.email = res.data.data.email;
+            this.password = res.data.data.password;
+            this.rol = res.data.data.rol;
+          }
+        );
+      } else {
+        mostrarAlerta('No tiene permisos para editar usuarios', 'warning', '');
+      }
 
-          this.name = res.data.data.name;
-          this.email = res.data.data.email;
-          this.password = res.data.data.password;
-        }
-      );
 
     },
 
     actualizar() {
-
+     
       event.preventDefault();
+      this.roladmin = store.state.user.data.rol;
       password = ""
-
-      if (this.name.trim() === '') {
-        mostrarAlerta('Campo nombre en blanco', 'warning', 'name');
-      } else {
-        if (this.email.trim() === '') {
-          mostrarAlerta('Campo apellido en blanco', 'warning', 'email');
+      if (this.roladmin == 'admin') {
+        if (this.name.trim() === '') {
+          mostrarAlerta('Campo nombre en blanco', 'warning', 'name');
         } else {
-          if (this.password.trim() === '') 
-            {
+          if (this.email.trim() === '') {
+            mostrarAlerta('Campo apellido en blanco', 'warning', 'email');
+          } else {
+            if (this.password.trim() === '') {
               mostrarAlerta('Campo password en blanco', 'warning', 'password');
-            }else{
-            var parametros = { name: this.name.trim(), email: this.email.trim(), password: this.password.trim() }
+            } else {
+              var parametros = { name: this.name.trim(), email: this.email.trim(), password: this.password.trim(), rol: this.rol.trim() }
 
-            enviarSolicitud('PUT', parametros, this.URI, 'Usuario actualizado');
-            this.$router.push({ name: 'listarU' });
+              enviarSolicitud('PUT', parametros, this.URI, 'Usuario actualizado');
+              this.$router.push({ name: 'listarU' });
             }
-          
+
+          }
         }
+      } else {
+        mostrarAlerta('No tiene permisos para editar usuarios', 'warning', '');
       }
+
+
 
     },
   },

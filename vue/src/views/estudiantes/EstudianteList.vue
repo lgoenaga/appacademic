@@ -88,7 +88,8 @@
             <ul class="pagination text-center">
               <li>
                 <a href="#" aria-label="Previous" v-show="pag != 1" @click.prevent="pag -= 1">
-                  <button class="btn text-white bg-emerald-600 rounded-md hover:bg-emerald-500" aria-hidden="true">Anterior</button>
+                  <button class="btn text-white bg-emerald-600 rounded-md hover:bg-emerald-500"
+                    aria-hidden="true">Anterior</button>
                 </a>
               </li>
               <li>
@@ -98,7 +99,8 @@
               </li>
               <li>
                 <a href="#" aria-label="Next" v-show="pag * NUM_RESULTS / totalItems < 1" @click.prevent="pag += 1">
-                  <button class="btn text-white bg-emerald-600 rounded-md hover:bg-emerald-500" aria-hidden="true">Siguiente</button>
+                  <button class="btn text-white bg-emerald-600 rounded-md hover:bg-emerald-500"
+                    aria-hidden="true">Siguiente</button>
                 </a>
               </li>
             </ul>
@@ -115,12 +117,12 @@
 
 <script setup>
 import PageComponent from '../../components/PageComponent.vue';
-
+import store from "../../store";
 </script>
 
 <script >
 
-import { confirmar, cargar } from "../../funciones";
+import { confirmar, cargar, mostrarAlerta } from "../../funciones";
 import axiosClient from "../../axios";
 
 
@@ -138,7 +140,7 @@ export default {
       NoPag: 1,
       pag: 1,
 
-
+      rolguest: '',
 
     };
   },
@@ -164,15 +166,22 @@ export default {
     },
 
     eliminar(id, nombre, imagen) {
-      confirmar(
-        "http://localhost:8000/api/estudiantes",
-        id,
-        imagen,
-        "Eliminar Registro",
-        "Realmente desea eliminar a " + nombre + " ?",
+      this.rolguest = store.state.user.data.rol;
+      if (this.rolguest == 'guest') {
+        mostrarAlerta('No tiene permisos para eliminar estudiantes', 'warning', '');
+        return;
+      } else {
+        confirmar(
+          "http://localhost:8000/api/estudiantes",
+          id,
+          imagen,
+          "Eliminar Registro",
+          "Realmente desea eliminar a " + nombre + " ?",
 
-      );
-      this.cargando = false;
+        );
+        this.cargando = false;
+      }
+
 
     },
 
@@ -212,11 +221,10 @@ export default {
 }
 
 
-.col.col-lg-8.offset-lg-2{
+.col.col-lg-8.offset-lg-2 {
 
   margin: 0;
   width: -moz-available;
 
 }
-
 </style>
